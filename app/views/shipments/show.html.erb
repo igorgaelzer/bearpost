@@ -156,38 +156,39 @@
           </div>
           <div class="kt-portlet__body">
             <div class="kt-portlet__content">
-              <p>
-                <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
-                  <tbody>
-                    <tr>
-                      <th>Pronto para envio</th>
-                      <td><%= l(@shipment.ready_for_shipping_at, format: :week_day_with_time) if @shipment.ready_for_shipping_at %></td>
-                    </tr>
-                    <tr>
-                      <th>Enviado</th>
-                      <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    </tr>
-                    <tr>
-                      <th>Entregue</th>
-                      <td><%= l(@shipment.delivered_at, format: :week_day_with_time) if @shipment.delivered_at %></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </p>
-              <p>
-                <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
-                  <tbody>
-                    <tr>
-                      <th>Prazo do cliente</th>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th>Prazo da transportadora</th>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </p>
+              <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
+                <tbody>
+                  <tr>
+                    <th style="width: 40%;">Aprovação do pedido</th>
+                    <td><%= l(@shipment.ready_for_shipping_at, format: :week_day_with_time) if @shipment.ready_for_shipping_at %></td>
+                  </tr>
+                  <tr>
+                    <th>Pronto para envio</th>
+                    <td><%= l(@shipment.ready_for_shipping_at, format: :week_day_with_time) if @shipment.ready_for_shipping_at %></td>
+                  </tr>
+                  <tr>
+                    <th>Enviado</th>
+                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                  </tr>
+                  <tr>
+                    <th>Entregue</th>
+                    <td><%= l(@shipment.delivered_at, format: :week_day_with_time) if @shipment.delivered_at %></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
+                <tbody>
+                  <tr>
+                    <th style="width: 40%;">Prazo da transp.</th>
+                    <td>Seg, 22/09/2019 - 5 dias úteis</td>
+                  </tr>
+                  <tr>
+                    <th>Prazo do cliente</th>
+                    <td>Qua, 24/09/2019 - 7 dias úteis</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
