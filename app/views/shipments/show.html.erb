@@ -85,7 +85,7 @@ Envio #<%= @shipment.shipment_number %>
               <tbody>
                 <tr>
                   <th>Aprovação do pedido</th>
-                  <td><%= l(Time.now, format: :week_day_with_time) %></td>
+                  <td><%= l(@order_approved_at, format: :week_day_with_time) %></td>
                 </tr>
                 <tr>
                   <th>Nota fiscal / série</th>
@@ -136,13 +136,13 @@ Envio #<%= @shipment.shipment_number %>
               <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
                 <tbody>
                   <tr>
-                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><i style="font-size: 20px;" class="fas fa-check-circle kt-font-info"></i></i></td>
+                    <td style="width: 40%;"><%= l(@shipping_due, format: :week_day) if @shipping_due %></td>
+                    <td><%= l(@shipped_at, format: :week_day_with_time) if @shipped_at %></td>
+                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><%= delivery_icon(@shipping_due, @shipped_at) %></td>
                   </tr>
                   <tr>
-                    <td>5 dias úteis</td>
-                    <td>3 dias úteis</td>
+                    <td><%= @handling_days_planned %> dias úteis</td>
+                    <td><%= @handling_days_used %> dias úteis</td>
                     <td></td>
                   </tr>
                   <tr style="color: #646c9978;">
@@ -157,13 +157,13 @@ Envio #<%= @shipment.shipment_number %>
               <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
                 <tbody>
                   <tr>
-                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><i style="font-size: 20px;" class="fas fa-exclamation-circle kt-font-warning"></i></i></td>
+                    <td><%= l(@carrier_delivery_due, format: :week_day) %></td>
+                    <td><%= l(@delivered_at, format: :week_day_with_time) %></td>
+                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><%= delivery_icon(@carrier_delivery_due, @delivered_at) %></td>
                   </tr>
                   <tr>
-                    <td>5 dias úteis</td>
-                    <td>3 dias úteis</td>
+                    <td><%= @carrier_delivery_days_planned %> dias úteis</td>
+                    <td><%= @carrier_delivery_days_used %> dias úteis</td>
                     <td></td>
                   </tr>
                   <tr style="color: #646c9978;">
@@ -178,13 +178,13 @@ Envio #<%= @shipment.shipment_number %>
               <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
                 <tbody>
                   <tr>
-                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
-                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><i style="font-size: 20px;" class="fas fa-check-circle kt-font-info"></i></i></td>
+                    <td><%= l(@client_delivery_due, format: :week_day ) %></td>
+                    <td><%= l(@delivered_at, format: :week_day_with_time ) %></td>
+                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><%= delivery_icon(@client_delivery_due, @delivered_at) %></td>
                   </tr>
                   <tr>
-                    <td>5 dias úteis</td>
-                    <td>3 dias úteis</td>
+                    <td><%= @client_delivery_days_planned %> dias úteis</td>
+                    <td><%= @client_delivery_days_used %> dias úteis</td>
                     <td></td>
                   </tr>
                   <tr style="color: #646c9978;">

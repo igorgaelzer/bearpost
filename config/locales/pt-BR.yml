@@ -87,6 +87,7 @@ pt-BR:
       default: "%d/%m/%Y"
       long: "%d de %B de %Y"
       short: "%d de %B"
+      week_day: "%a, %d/%m/%Y"
     month_names:
     -
     - Janeiro
