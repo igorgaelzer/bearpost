@@ -1,43 +1,43 @@
 <style>
-.debug_dump {
-  font-size: 13px;
-  color: #646c9a;
-}
-.edit-status .alter-status {
-  display: none;
-}
-.edit-status:hover .alter-status{
-  display: inline-flex;
-}
-.edit-status:hover .current-status{
-  display: none;
-}
+  .debug_dump {
+    font-size: 13px;
+    color: #646c9a;
+  }
+  .edit-status .alter-status {
+    display: none;
+  }
+  .edit-status:hover .alter-status{
+    display: inline-flex;
+  }
+  .edit-status:hover .current-status{
+    display: none;
+  }
 </style>
 
 <% content_for :subheader_title do %>
-  Envio #<%= @shipment.shipment_number %>
+Envio #<%= @shipment.shipment_number %>
 <% end %>
 
 <%= content_for :subheader_toolbar do %>
 
-  <%= link_to get_labels_shipment_path(format: :pdf), class: "btn btn-sm btn-secondary btn-label-brand", target:'_blank' do %>
-  <i class="la la-print"></i> Imprimir etiquetas
-  <% end %>
+<%= link_to get_labels_shipment_path(format: :pdf), class: "btn btn-sm btn-secondary btn-label-brand", target:'_blank' do %>
+<i class="la la-print"></i> Imprimir etiquetas
+<% end %>
 
-  <%= link_to "Editar", edit_shipment_path, class: "btn btn-sm btn-elevate btn-brand btn-elevate" %>
+<%= link_to "Editar", edit_shipment_path, class: "btn btn-sm btn-elevate btn-brand btn-elevate" %>
 
-  <div class="btn-group">
-    <button type="button" class="btn btn-pill btn-outline-brand btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Opções
-    </button>
-    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(86px, 33px, 0px);">
-      <%= link_to "Informações adicionais", "#", class: "dropdown-item", "data-toggle" => "modal", 'data-target' => '#extraInfoModal' %>
-      <div class="dropdown-divider"></div>
-      <% @carrier.shipment_menu_links.each do |text, path| %>
-      <%= link_to text, path.gsub(/:id/,"#{@shipment.id}"), class: "dropdown-item", method: :post %>
-      <% end %>
-    </div>
+<div class="btn-group">
+  <button type="button" class="btn btn-pill btn-outline-brand btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Opções
+  </button>
+  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(86px, 33px, 0px);">
+    <%= link_to "Informações adicionais", "#", class: "dropdown-item", "data-toggle" => "modal", 'data-target' => '#extraInfoModal' %>
+    <div class="dropdown-divider"></div>
+    <% @carrier.shipment_menu_links.each do |text, path| %>
+    <%= link_to text, path.gsub(/:id/,"#{@shipment.id}"), class: "dropdown-item", method: :post %>
+    <% end %>
   </div>
+</div>
 
 <% end %>
 
@@ -51,8 +51,8 @@
             Geral
           </h3>
           <%= link_to "#", "data-toggle" => "modal", 'data-target' => '#statusesModal', class: "ml-3 edit-status" do %>
-            <span class="current-status"><%= status_label(@shipment.status) %></span>
-            <span class='kt-badge badge-light kt-badge--inline kt-badge--pill alter-status'><nobr>Alterar status</nobr></span>
+          <span class="current-status"><%= status_label(@shipment.status) %></span>
+          <span class='kt-badge badge-light kt-badge--inline kt-badge--pill alter-status'><nobr>Alterar status</nobr></span>
           <% end %>
         </div>
       </div>
@@ -84,6 +84,10 @@
             <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
               <tbody>
                 <tr>
+                  <th>Aprovação do pedido</th>
+                  <td><%= l(Time.now, format: :week_day_with_time) %></td>
+                </tr>
+                <tr>
                   <th>Nota fiscal / série</th>
                   <td><%= link_to "#{@shipment.invoice_number} / #{@shipment.invoice_series}", "#", "data-toggle" => "modal", 'data-target' => '#invoiceXmlModal', class: "kt-link" %></td>
                 </tr>
@@ -91,20 +95,20 @@
                   <th>Rastreamento</th>
                   <td>
                     <% if @shipment.tracking_number.present? %>
-                      <%= link_to @shipment.tracking_number, @shipment.tracking_url, class: "kt-link", id:"tracking-url", target: "_blank" %>
+                    <%= link_to @shipment.tracking_number, @shipment.tracking_url, class: "kt-link", id:"tracking-url", target: "_blank" %>
                     <% else %>
-                      <%= link_to "Obter rastreio", save_tracking_number_shipment_path, class: "kt-link" %>
+                    <%= link_to "Obter rastreio", save_tracking_number_shipment_path, class: "kt-link" %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
                   <th>Sincronizado</th>
                   <td>
-                  <% if @shipment.sent_to_carrier %>
+                    <% if @shipment.sent_to_carrier %>
                     Sim <i class="la la-check-circle"></i>
-                  <% else %>
+                    <% else %>
                     <%= link_to "Não", send_to_carrier_shipment_path, class: "kt-link" , method:'post' %>
-                  <% end %>
+                    <% end %>
                   </td>
                 </tr>
               </tbody>
@@ -115,36 +119,8 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <div class="kt-portlet">
-          <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">
-                Destinatário
-              </h3>
-            </div>
-          </div>
-          <div class="kt-portlet__body">
-            <div class="kt-portlet__content">
-                <div style="line-height: 1.7;">
-                  <p>
-                    <strong><%= @shipment.full_name %></strong><br>
-                    CPF <%= @shipment.cpf %><br>
-                    <%= @shipment.email %><br>
-                    <%= @shipment.phone %><br>
-                  </p>
-                  <p>
-                    <%= @shipment.street %>, <%= @shipment.number %><br>
-                    <%= @shipment.complement %><br>
-                    <%= @shipment.city %>, <%= @shipment.state %> <%= @shipment.zip %><br>
-                    <%= @shipment.country %>
-                  </p>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
+      <!-- Start of datas e prazos -->
       <div class="col-md-6">
         <div class="kt-portlet kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -156,36 +132,65 @@
           </div>
           <div class="kt-portlet__body">
             <div class="kt-portlet__content">
+              <p><strong>Envio</strong></p>
               <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
                 <tbody>
                   <tr>
-                    <th style="width: 40%;">Aprovação do pedido</th>
-                    <td><%= l(@shipment.ready_for_shipping_at, format: :week_day_with_time) if @shipment.ready_for_shipping_at %></td>
-                  </tr>
-                  <tr>
-                    <th>Pronto para envio</th>
-                    <td><%= l(@shipment.ready_for_shipping_at, format: :week_day_with_time) if @shipment.ready_for_shipping_at %></td>
-                  </tr>
-                  <tr>
-                    <th>Enviado</th>
                     <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><i style="font-size: 20px;" class="fas fa-check-circle kt-font-info"></i></i></td>
                   </tr>
                   <tr>
-                    <th>Entregue</th>
-                    <td><%= l(@shipment.delivered_at, format: :week_day_with_time) if @shipment.delivered_at %></td>
+                    <td>5 dias úteis</td>
+                    <td>3 dias úteis</td>
+                    <td></td>
+                  </tr>
+                  <tr style="color: #646c9978;">
+                    <td>Previsto</td>
+                    <td>Realizado</td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
-
+              <hr>
+              <p><strong>Transportadora</strong></p>
               <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
                 <tbody>
                   <tr>
-                    <th style="width: 40%;">Prazo da transp.</th>
-                    <td>Seg, 22/09/2019 - 5 dias úteis</td>
+                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><i style="font-size: 20px;" class="fas fa-exclamation-circle kt-font-warning"></i></i></td>
                   </tr>
                   <tr>
-                    <th>Prazo do cliente</th>
-                    <td>Qua, 24/09/2019 - 7 dias úteis</td>
+                    <td>5 dias úteis</td>
+                    <td>3 dias úteis</td>
+                    <td></td>
+                  </tr>
+                  <tr style="color: #646c9978;">
+                    <td>Previsto</td>
+                    <td>Realizado</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <hr>
+              <p><strong>Cliente</strong></p>
+              <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
+                <tbody>
+                  <tr>
+                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                    <td><%= l(@shipment.shipped_at, format: :week_day_with_time) if @shipment.shipped_at %></td>
+                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><i style="font-size: 20px;" class="fas fa-check-circle kt-font-info"></i></i></td>
+                  </tr>
+                  <tr>
+                    <td>5 dias úteis</td>
+                    <td>3 dias úteis</td>
+                    <td></td>
+                  </tr>
+                  <tr style="color: #646c9978;">
+                    <td>Previsto</td>
+                    <td>Realizado</td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
@@ -193,10 +198,43 @@
           </div>
         </div>
       </div>
+      <!-- End of datas e prazos -->
 
+      <!-- Start of Destinatário -->
+      <div class="col-md-6">
+        <div class="kt-portlet">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                Destinatário
+              </h3>
+            </div>
+          </div>
+          <div class="kt-portlet__body">
+            <div class="kt-portlet__content">
+              <div style="line-height: 1.7;">
+                <p>
+                  <strong><%= @shipment.full_name %></strong><br>
+                </p>
+                <p>
+                  CPF <%= @shipment.cpf %><br>
+                  <%= @shipment.email %><br>
+                  <%= @shipment.phone %><br>
+                </p>
+                <p>
+                  <%= @shipment.street %>, <%= @shipment.number %><br>
+                  <%= @shipment.complement %><br>
+                  <%= @shipment.city %>, <%= @shipment.state %> <%= @shipment.zip %><br>
+                  <%= @shipment.country %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of Destinatário -->
 
     </div>
-
 
     <% total_shipments = @shipment.packages.size %>
     <div class="row">
@@ -206,56 +244,58 @@
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title">
-                </i> Pacote <%= @shipment.packages.index(package) + 1 %>
-              </h3>
-            </div>
-            <div class="kt-portlet__head-toolbar">
-              <%= link_to "Editar", edit_package_path(package), class: "float-right kt-link" %>
-            </div>
+              </i> Pacote <%= @shipment.packages.index(package) + 1 %>
+            </h3>
           </div>
-          <div class="kt-portlet__body">
-            <div class="kt-portlet__content">
-              <%= render 'packages/table', package: package %>
-            </div>
+          <div class="kt-portlet__head-toolbar">
+            <%= link_to "Editar", edit_package_path(package), class: "float-right kt-link" %>
+          </div>
+        </div>
+        <div class="kt-portlet__body">
+          <div class="kt-portlet__content">
+            <%= render 'packages/table', package: package %>
           </div>
         </div>
       </div>
-
-      <% end %>
     </div>
 
-
-    <%= link_to new_package_path(shipment_id:@shipment.id), class: "p-5 btn btn-light btn-elevate-hover btn-square fill-div" do %>
-    <i class="flaticon2-plus"></i> Novo pacote
     <% end %>
-  </div><!-- End of first column -->
+  </div>
 
-  <div class="col-md-4">
-    <div class="kt-portlet">
-      <div class="kt-portlet__head">
-        <div class="kt-portlet__head-label">
-          <h3 class="kt-portlet__head-title">
-            Histórico
-          </h3>
-        </div>
-        <div class="kt-portlet__head-toolbar">
-          <%= link_to save_delivery_updates_shipment_path, class: "btn btn-sm btn-outline-brand btn-elevate btn-circle btn-icon", method:'post' do %>
-            <i class="la la-refresh"></i>
-          <% end %>
-        </div>
+
+  <%= link_to new_package_path(shipment_id:@shipment.id), class: "p-5 btn btn-light btn-elevate-hover btn-square fill-div" do %>
+  <i class="flaticon2-plus"></i> Novo pacote
+  <% end %>
+</div><!-- End of first column -->
+
+<div class="col-md-4">
+  <div class="kt-portlet">
+    <div class="kt-portlet__head">
+      <div class="kt-portlet__head-label">
+        <h3 class="kt-portlet__head-title">
+          Histórico
+        </h3>
       </div>
-      <div class="kt-portlet__body">
-        <!--Begin::Timeline -->
-        <div class="kt-timeline">
-          <% @shipment.histories.recent_first.each do |history| %>
-            <%= render 'history', history: history %>
-          <% end %>
-        </div>
-        <!--End::Timeline -->
+      <div class="kt-portlet__head-toolbar">
+        <%= link_to save_delivery_updates_shipment_path, class: "btn btn-sm btn-outline-brand btn-elevate btn-circle btn-icon", method:'post' do %>
+        <i class="la la-refresh"></i>
+        <% end %>
       </div>
+    </div>
+    <div class="kt-portlet__body">
+      <!--Begin::Timeline -->
+      <div class="kt-timeline">
+        <% @shipment.histories.recent_first.each do |history| %>
+        <%= render 'history', history: history %>
+        <% end %>
+      </div>
+      <!--End::Timeline -->
     </div>
   </div>
 </div>
+</div>
+
+
 
 <!-- Modal de Informações Adicionais-->
 <div class="modal fade" id="extraInfoModal" tabindex="-1" role="dialog">
@@ -321,11 +361,11 @@
 </div>
 
 <script>
-$( document ).on('turbolinks:load', function() {
-  new ClipboardJS('.clipboard-btn', {
-    text: function(trigger) {
-      return $("#tracking-url").attr('href');
-    }
+  $( document ).on('turbolinks:load', function() {
+    new ClipboardJS('.clipboard-btn', {
+      text: function(trigger) {
+        return $("#tracking-url").attr('href');
+      }
+    });
   });
-});
 </script>
