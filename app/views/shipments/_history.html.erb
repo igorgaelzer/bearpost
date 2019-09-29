@@ -17,7 +17,7 @@ end
       </div>
     </div>
     <span class="kt-timeline__item-datetime mr-3">
-      <%= history.date.strftime("%d/%m/%Y %H:%M") if history.date %>
+      <%= l(history.date, format: :week_day_with_time) if history.date %>
     </span>
   </div>
   <span class="kt-timeline__item-text">

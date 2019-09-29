@@ -70,12 +70,12 @@ Envio #<%= @shipment.shipment_number %>
                   <td><%= @shipment.account.name if @shipment.account %></td>
                 </tr>
                 <tr>
-                  <th>Transportadora</th>
-                  <td><%= link_to @carrier.name, edit_carrier_path(@carrier.name), class: "kt-link" if @carrier %></td>
+                  <th>Nota fiscal / série</th>
+                  <td><%= link_to "#{@shipment.invoice_number} / #{@shipment.invoice_series}", "#", "data-toggle" => "modal", 'data-target' => '#invoiceXmlModal', class: "kt-link" %></td>
                 </tr>
                 <tr>
-                  <th>Método de envio</th>
-                  <td><%= @shipment.shipping_method %></td>
+                  <th>Aprovação do pedido</th>
+                  <td><%= l(@shipment.approved_at, format: :week_day_with_time) if @shipment.approved_at %></td>
                 </tr>
               </tbody>
             </table>
@@ -84,12 +84,12 @@ Envio #<%= @shipment.shipment_number %>
             <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
               <tbody>
                 <tr>
-                  <th>Aprovação do pedido</th>
-                  <td><%= l(@order_approved_at, format: :week_day_with_time) %></td>
+                  <th>Transportadora</th>
+                  <td><%= link_to @carrier.name, edit_carrier_path(@carrier.name), class: "kt-link" if @carrier %></td>
                 </tr>
                 <tr>
-                  <th>Nota fiscal / série</th>
-                  <td><%= link_to "#{@shipment.invoice_number} / #{@shipment.invoice_series}", "#", "data-toggle" => "modal", 'data-target' => '#invoiceXmlModal', class: "kt-link" %></td>
+                  <th>Método de envio</th>
+                  <td><%= @shipment.shipping_method %></td>
                 </tr>
                 <tr>
                   <th>Rastreamento</th>
@@ -132,68 +132,53 @@ Envio #<%= @shipment.shipment_number %>
           </div>
           <div class="kt-portlet__body">
             <div class="kt-portlet__content">
-              <p><strong>Envio</strong></p>
-              <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
-                <tbody>
-                  <tr>
-                    <td style="width: 40%;"><%= l(@shipping_due, format: :week_day) if @shipping_due %></td>
-                    <td><%= l(@shipped_at, format: :week_day_with_time) if @shipped_at %></td>
-                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><%= delivery_icon(@shipping_due, @shipped_at) %></td>
-                  </tr>
-                  <tr>
-                    <td><%= @handling_days_planned %> dias úteis</td>
-                    <td><%= @handling_days_used %> dias úteis</td>
-                    <td></td>
-                  </tr>
-                  <tr style="color: #646c9978;">
-                    <td>Previsto</td>
-                    <td>Realizado</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+              <strong>Envio</strong></p>
+              <div class="row">
+                <div class="col-md-5">
+                  Previsto <br>
+                  <%= expected_shipping_info(@shipment) %>
+                </div>
+                <div class="col-md-6">
+                  Realizado <br>
+                  <%= realized_shipping_info(@shipment) %>
+                </div>
+                <div class="col-md-1">
+                  <%= delivery_icon(@shipment.handling_days_delayed) %>
+                </div>
+              </div>
               <hr>
+
               <p><strong>Transportadora</strong></p>
-              <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
-                <tbody>
-                  <tr>
-                    <td><%= l(@carrier_delivery_due, format: :week_day) %></td>
-                    <td><%= l(@delivered_at, format: :week_day_with_time) %></td>
-                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><%= delivery_icon(@carrier_delivery_due, @delivered_at) %></td>
-                  </tr>
-                  <tr>
-                    <td><%= @carrier_delivery_days_planned %> dias úteis</td>
-                    <td><%= @carrier_delivery_days_used %> dias úteis</td>
-                    <td></td>
-                  </tr>
-                  <tr style="color: #646c9978;">
-                    <td>Previsto</td>
-                    <td>Realizado</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="row">
+                <div class="col-md-5">
+                  Previsto <br>
+                  <%= expected_carrier_delivery_info(@shipment) %>
+                </div>
+                <div class="col-md-6">
+                  Realizado <br>
+                  <%= realized_carrier_delivery_info(@shipment) %>
+                </div>
+                <div class="col-md-1">
+                  <%= delivery_icon(@shipment.carrier_delivery_days_delayed) %>
+                </div>
+              </div>
               <hr>
+
               <p><strong>Cliente</strong></p>
-              <table class="table table-borderless table-sm table-hover" style="color: #646c9a;">
-                <tbody>
-                  <tr>
-                    <td><%= l(@client_delivery_due, format: :week_day ) %></td>
-                    <td><%= l(@delivered_at, format: :week_day_with_time ) %></td>
-                    <td style="vertical-align: middle; text-align:right;" rowspan="2"><%= delivery_icon(@client_delivery_due, @delivered_at) %></td>
-                  </tr>
-                  <tr>
-                    <td><%= @client_delivery_days_planned %> dias úteis</td>
-                    <td><%= @client_delivery_days_used %> dias úteis</td>
-                    <td></td>
-                  </tr>
-                  <tr style="color: #646c9978;">
-                    <td>Previsto</td>
-                    <td>Realizado</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="row">
+                <div class="col-md-5">
+                  Previsto <br>
+                  <%= expected_client_delivery_info(@shipment) %>
+                </div>
+                <div class="col-md-6">
+                  Realizado <br>
+                  <%= realized_client_delivery_info(@shipment) %>
+                </div>
+                <div class="col-md-1">
+                  <%= delivery_icon(@shipment.client_delivery_days_delayed) %>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -214,7 +199,7 @@ Envio #<%= @shipment.shipment_number %>
             <div class="kt-portlet__content">
               <div style="line-height: 1.7;">
                 <p>
-                  <strong><%= @shipment.full_name %></strong><br>
+                  <strong><%= @shipment.full_name.titleize %></strong><br>
                 </p>
                 <p>
                   CPF <%= @shipment.cpf %><br>

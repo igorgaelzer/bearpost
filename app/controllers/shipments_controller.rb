@@ -9,20 +9,7 @@ class ShipmentsController < ApplicationController
   end
 
   def show
-    @handling_days_planned = 3
-    @handling_days_used = 1
-    @carrier_delivery_days_planned = 3
-
-    @order_approved_at = @handling_days_used .business_days.before(@shipment.shipped_at)
-    @shipped_at = @shipment.shipped_at
-    @handling_days_used = @order_approved_at.to_date.business_days_until(@shipped_at.to_date)
-    @shipping_due = @handling_days_planned.business_days.after(@order_approved_at.to_date)
-    @delivered_at = @shipment.delivered_at
-    @carrier_delivery_due = @carrier_delivery_days_planned.business_days.after(@shipped_at.to_date)
-    @carrier_delivery_days_used = @shipped_at.to_date.business_days_until(@delivered_at.to_date)
-    @client_delivery_days_planned = @handling_days_planned + @carrier_delivery_days_planned
-    @client_delivery_due = @client_delivery_days_planned.business_days.after(@order_approved_at.to_date)
-    @client_delivery_days_used = @order_approved_at.to_date.business_days_until(@delivered_at.to_date)
+    
   end
 
   def new
